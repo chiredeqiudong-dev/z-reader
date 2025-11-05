@@ -1,0 +1,6 @@
+######################### spring ##########################
+spring:
+  application:
+    name: z-reader
+  profiles:
+    active: test
