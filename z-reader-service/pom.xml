@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>z-reader-service</artifactId>
-    <packaging>jar</packaging>
     <description>业务逻辑模块</description>
 
 </project>

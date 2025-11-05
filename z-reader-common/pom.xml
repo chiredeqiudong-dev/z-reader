@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>z-reader-common</artifactId>
-    <packaging>jar</packaging>
     <description>通用工具模块</description>
 
 

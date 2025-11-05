@@ -4,3 +4,8 @@ spring:
     name: z-reader
   profiles:
     active: test
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB

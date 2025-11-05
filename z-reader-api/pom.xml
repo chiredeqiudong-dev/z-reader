@@ -12,8 +12,6 @@
     </parent>
 
     <artifactId>z-reader-api</artifactId>
-    <description>api</description>
-    <packaging>jar</packaging>
 
 
 

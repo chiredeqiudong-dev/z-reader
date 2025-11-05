@@ -5,7 +5,7 @@
 
     <groupId>cn.turingzy</groupId>
     <artifactId>z-reader</artifactId>
-    <version>${z-reader.version}</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>z-reader</name>
 
@@ -29,11 +29,20 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <tika.version>3.2.3</tika.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-bom</artifactId>
+                <version>${tika.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
