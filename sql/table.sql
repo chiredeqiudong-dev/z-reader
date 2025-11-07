@@ -9,9 +9,11 @@ CREATE TABLE z_user
     avatar_url VARCHAR(512)          DEFAULT NULL COMMENT '头像URL',
     gender     TINYINT               DEFAULT NULL COMMENT '性别 0:女,1:男',
     bio        VARCHAR(255)          DEFAULT NULL COMMENT '个人简介',
+    role       TINYINT      NOT NULL COMMENT '用户角色：0=馆长 1=游客',
     created_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    CHECK (gender = 0 or gender = 1)
+    CHECK (gender = 0 or gender = 1),
+    CHECK (role = 0 or role = 1)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
@@ -29,7 +31,7 @@ CREATE TABLE z_book
     publish_date  DATE                  DEFAULT NULL COMMENT '出版日期',
     pages         INT UNSIGNED          DEFAULT NULL COMMENT '总页数',
     cover_url     VARCHAR(512)          DEFAULT NULL COMMENT '封面图片URL',
-    summary       TEXT                  DEFAULT NULL COMMENT '内容简介',
+    summary       VARCHAR(512)          DEFAULT NULL COMMENT '内容简介',
     book_language VARCHAR(10)  NOT NULL DEFAULT 'zh-CN' COMMENT '语言 zh-CN、en、jp等',
     category_id   INT UNSIGNED          DEFAULT NULL COMMENT '分类ID（关联z_book_category）',
     created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -47,11 +49,19 @@ CREATE TABLE z_book_progress
     reading_hours   BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计阅读时长（秒）',
     reading_percent INT UNSIGNED    NOT NULL DEFAULT 0 COMMENT '阅读比例（0-10000，代表0.00%-100.00%）',
     last_position   VARCHAR(255)             DEFAULT NULL COMMENT '最后位置：{"type":"txt","chapter":5,"page_in_chapter":3} 或 {"type":"pdf","page":5}',
-    created_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='书籍阅读进度表';
+
+# 书籍章节表
+CREATE TABLE z_book_toc
+(
+    book_id INT UNSIGNED NOT NULL PRIMARY KEY COMMENT '书籍ID',
+    toc     JSON         NOT NULL COMMENT 'TOC树形结构 (JSON格式)'
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT '书籍目录表 (TOC)';
 
 # 书籍分类表
 CREATE TABLE z_book_category
@@ -76,9 +86,7 @@ CREATE TABLE z_book_storage
     file_hash           CHAR(64)        NOT NULL UNIQUE COMMENT 'SHA256 文件哈希（防重复上传）',
     -- 存储位置
     storage_provider_id VARCHAR(10)     NOT NULL COMMENT '存储服务提供ID',
-    file_url            VARCHAR(1024)   NOT NULL COMMENT '文件完整访问URL',
-    created_at          DATETIME(6)     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '上传时间',
-    updated_at          DATETIME(6)     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    file_url            VARCHAR(1024)   NOT NULL COMMENT '文件完整访问URL'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='书籍文件存储表';
