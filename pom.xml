@@ -11,9 +11,11 @@
 
     <modules>
         <module>z-reader-common</module>
-        <module>z-reader-web</module>
-        <module>z-reader-api</module>
-        <module>z-reader-service</module>
+        <module>z-reader-app</module>
+        <module>z-reader-auth</module>
+        <module>z-reader-book</module>
+        <module>z-reader-setting</module>
+        <module>z-reader-progress</module>
     </modules>
 
     <parent>
@@ -24,18 +26,20 @@
     </parent>
 
     <properties>
+        <!--属性-->
         <z-reader.version>1.0.0</z-reader.version>
         <java.version>21</java.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
+        <!--依赖版本-->
         <tika.version>3.2.3</tika.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <!--书籍文件解析包-->
             <dependency>
                 <groupId>org.apache.tika</groupId>
                 <artifactId>tika-bom</artifactId>

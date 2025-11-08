@@ -11,26 +11,23 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>z-reader-web</artifactId>
+    <artifactId>z-reader-app</artifactId>
     <packaging>jar</packaging>
-    <description>书籍管理的web端</description>
+    <description>应用启动模块</description>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-parsers-standard-package</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

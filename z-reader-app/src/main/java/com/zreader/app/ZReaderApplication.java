@@ -1,4 +1,4 @@
-package cn.turingzy.zreader.web;
+package com.zreader.app;
 
 
 import org.springframework.boot.SpringApplication;

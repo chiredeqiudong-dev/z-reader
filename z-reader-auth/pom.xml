@@ -11,9 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>z-reader-common</artifactId>
+    <artifactId>z-reader-auth</artifactId>
     <packaging>jar</packaging>
-    <description>通用工具模块</description>
+    <description>鉴权模块</description>
+
 
 
 
