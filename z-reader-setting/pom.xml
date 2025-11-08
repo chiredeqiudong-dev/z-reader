@@ -13,7 +13,7 @@
 
     <artifactId>z-reader-setting</artifactId>
     <packaging>jar</packaging>
-    <description>系统配置模块</description>
+    <description>系统配置模块(分类、存储)</description>
 
 
 
