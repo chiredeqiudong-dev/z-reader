@@ -1,4 +1,4 @@
-package com.zreader.app.controller;
+package com.zreader.app.test;
 
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
