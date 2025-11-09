@@ -9,4 +9,8 @@ spring:
       enabled: true
       max-file-size: 50MB
       max-request-size: 100MB
-
+################### mybatis-plus #########################
+mybatis-plus:
+  configuration:
+    # 驼峰命名映射
+    map-underscore-to-camel-case: true

@@ -1,5 +1,8 @@
+CREATE DATABASE IF NOT EXISTS z_reader;
+USE z_reader;
+
 # 用户表
-CREATE TABLE z_user
+CREATE TABLE IF NOT EXISTS z_user
 (
     id         TINYINT PRIMARY KEY COMMENT '用户唯一ID',
     username   VARCHAR(64)  NOT NULL UNIQUE COMMENT '用户账号',
@@ -9,9 +12,9 @@ CREATE TABLE z_user
     avatar_url VARCHAR(512)          DEFAULT NULL COMMENT '头像URL',
     gender     TINYINT               DEFAULT NULL COMMENT '性别 0:女,1:男',
     bio        VARCHAR(255)          DEFAULT NULL COMMENT '个人简介',
-    role       TINYINT      NOT NULL COMMENT '用户角色：0=馆长 1=游客',
-    created_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    role       TINYINT      NOT NULL COMMENT '用户角色：0=ROOT_USER 1=COMMON_USER',
+    created_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+    updated_at DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     CHECK (gender = 0 or gender = 1),
     CHECK (role = 0 or role = 1)
 ) ENGINE = InnoDB
@@ -19,7 +22,7 @@ CREATE TABLE z_user
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户表';
 
 # 书籍信息表
-CREATE TABLE z_book
+CREATE TABLE IF NOT EXISTS z_book
 (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '书籍唯一ID',
     isbn          CHAR(13)              DEFAULT NULL UNIQUE COMMENT 'ISBN-13（国际标准书号）',
@@ -32,30 +35,30 @@ CREATE TABLE z_book
     pages         INT UNSIGNED          DEFAULT NULL COMMENT '总页数',
     cover_url     VARCHAR(512)          DEFAULT NULL COMMENT '封面图片URL',
     summary       VARCHAR(512)          DEFAULT NULL COMMENT '内容简介',
-    book_language VARCHAR(10)  NOT NULL DEFAULT 'zh-CN' COMMENT '语言 zh-CN、en、jp等',
+    book_language VARCHAR(25)  NOT NULL DEFAULT 'zh-CN' COMMENT '语言 zh-CN、en、jp等',
     category_id   INT UNSIGNED          DEFAULT NULL COMMENT '分类ID（关联z_book_category）',
-    created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    created_at    DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+    updated_at    DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     CHECK (score IN (0, 1, 2, 3, 4, 5))
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='书籍信息表';
 
 # 书籍阅读进度表
-CREATE TABLE z_book_progress
+CREATE TABLE IF NOT EXISTS z_book_progress
 (
     book_id         INT UNSIGNED PRIMARY KEY COMMENT '书籍进度唯一ID',
-    reading_status  VARCHAR(10)     NOT NULL DEFAULT 'not_started' COMMENT '阅读状态：not_started=未开始, reading=正在阅读, finished=已读完',
+    reading_status  VARCHAR(25)     NOT NULL DEFAULT 'not_started' COMMENT '阅读状态：not_started=未开始, reading=正在阅读, finished=已读完',
     reading_hours   BIGINT UNSIGNED NOT NULL DEFAULT 0 COMMENT '累计阅读时长（秒）',
     reading_percent INT UNSIGNED    NOT NULL DEFAULT 0 COMMENT '阅读比例（0-10000，代表0.00%-100.00%）',
     last_position   VARCHAR(255)             DEFAULT NULL COMMENT '最后位置：{"type":"txt","chapter":5,"page_in_chapter":3} 或 {"type":"pdf","page":5}',
-    updated_at      DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间'
+    updated_at      DATETIME(6)     NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '最后更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='书籍阅读进度表';
 
 # 书籍章节表
-CREATE TABLE z_book_toc
+CREATE TABLE IF NOT EXISTS z_book_toc
 (
     book_id INT UNSIGNED NOT NULL PRIMARY KEY COMMENT '书籍ID',
     toc     JSON         NOT NULL COMMENT 'TOC树形结构 (JSON格式)'
@@ -64,19 +67,19 @@ CREATE TABLE z_book_toc
   COLLATE = utf8mb4_0900_ai_ci COMMENT '书籍目录表 (TOC)';
 
 # 书籍分类表
-CREATE TABLE z_book_category
+CREATE TABLE IF NOT EXISTS z_book_category
 (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '分类唯一ID',
     category_name VARCHAR(64)  NOT NULL UNIQUE COMMENT '分类名称（全局唯一）',
     book_count    INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '该分类下书籍数量',
-    created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    updated_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间'
+    created_at    DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+    updated_at    DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='书籍分类表';
 
 # 书籍存储表
-CREATE TABLE z_book_storage
+CREATE TABLE IF NOT EXISTS z_book_storage
 (
     -- 文件基础信息
     book_id             INT UNSIGNED PRIMARY KEY COMMENT '书籍ID',
@@ -108,8 +111,8 @@ CREATE TABLE IF NOT EXISTS z_storage_provider
     secret_key      VARCHAR(256)                                         DEFAULT NULL COMMENT '私密密钥',
     bucket_name     VARCHAR(128)                                         DEFAULT NULL COMMENT '存储桶',
     base_path       VARCHAR(255)                                         DEFAULT '/' COMMENT '路径前缀（如：/books/）',
-    created_at      DATETIME(6)                                 NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    updated_at      DATETIME(6)                                 NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
+    created_at      DATETIME(6)                                 NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
+    updated_at      DATETIME(6)                                 NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='存储提供商配置表';
