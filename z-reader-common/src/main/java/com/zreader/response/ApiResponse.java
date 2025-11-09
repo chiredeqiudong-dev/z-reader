@@ -32,10 +32,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(SUCCESS.getCode(), SUCCESS.getMsg(), null);
     }
 
-    public static <T> ApiResponse<T> ok(String msg) {
-        return new ApiResponse<>(SUCCESS.getCode(), msg, null);
-    }
-
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(SUCCESS.getCode(), SUCCESS.getMsg(), data);
     }
@@ -57,10 +53,6 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> error(String msg) {
         return new ApiResponse<>(ERROR.getCode(), msg, null);
-    }
-
-    public static <T> ApiResponse<T> error(T data) {
-        return new ApiResponse<>(ERROR.getCode(), ERROR.getMsg(), data);
     }
 
     public static <T> ApiResponse<T> error(String code,String msg) {

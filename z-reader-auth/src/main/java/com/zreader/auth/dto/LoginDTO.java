@@ -17,8 +17,7 @@ public class LoginDTO {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    public LoginDTO() {
-    }
+    public LoginDTO() {}
 
     public LoginDTO(String username, String password) {
         this.username = username;

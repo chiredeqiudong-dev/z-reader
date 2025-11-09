@@ -21,6 +21,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginDTO loginDto) {
-        return "";
+        return "abc123";
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author zy
  * @date 2025/11/5
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.zreader"})
 @MapperScan("com.zreader.*.mapper")
 public class ZReaderApplication {
 
