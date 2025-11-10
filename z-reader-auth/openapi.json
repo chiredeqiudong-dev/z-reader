@@ -1,0 +1,461 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Z-Reader 认证模块 API",
+    "description": "个人电子书阅读器 - 认证鉴权模块，提供用户登录、注册游客、用户信息管理等功能",
+    "version": "1.0.0",
+    "contact": {
+      "name": "zy",
+      "email": "your-email@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "本地开发服务器"
+    }
+  ],
+  "tags": [
+    {
+      "name": "认证",
+      "description": "用户认证相关接口"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "post": {
+        "tags": ["认证"],
+        "summary": "用户登录",
+        "description": "管理员或游客通过用户名和密码登录系统",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDTO"
+              },
+              "examples": {
+                "管理员登录": {
+                  "value": {
+                    "username": "admin",
+                    "password": "admin123"
+                  }
+                },
+                "游客登录": {
+                  "value": {
+                    "username": "guest001",
+                    "password": "guest123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseLoginVO"
+                }
+              }
+            }
+          },
+          "A1001": {
+            "description": "用户名或密码错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "A1001",
+                  "msg": "用户名或密码错误",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register-guest": {
+      "post": {
+        "tags": ["认证"],
+        "summary": "管理员注册游客",
+        "description": "仅管理员可以注册新的游客账号",
+        "operationId": "registerGuest",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDTO"
+              },
+              "example": {
+                "username": "guest001",
+                "password": "guest123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "注册成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "A1003": {
+            "description": "用户名已存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "A1003",
+                  "msg": "用户名已存在",
+                  "data": null
+                }
+              }
+            }
+          },
+          "A1007": {
+            "description": "仅管理员可操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "A1007",
+                  "msg": "仅管理员可操作",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/current-user": {
+      "get": {
+        "tags": ["认证"],
+        "summary": "获取当前用户信息",
+        "description": "获取当前登录用户的详细信息",
+        "operationId": "getCurrentUser",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "获取成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseUserInfoVO"
+                }
+              }
+            }
+          },
+          "A1004": {
+            "description": "未登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "A1004",
+                  "msg": "未登录",
+                  "data": null
+                }
+              }
+            }
+          },
+          "U2001": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "U2001",
+                  "msg": "用户不存在",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "tags": ["认证"],
+        "summary": "用户登出",
+        "description": "退出当前登录状态",
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "登出成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/check-login": {
+      "get": {
+        "tags": ["认证"],
+        "summary": "检查登录状态",
+        "description": "检查当前是否处于登录状态",
+        "operationId": "checkLogin",
+        "responses": {
+          "200": {
+            "description": "检查成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseBoolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Authentication": {
+        "type": "apiKey",
+        "name": "Authentication",
+        "in": "header",
+        "description": "Sa-Token 认证令牌"
+      }
+    },
+    "schemas": {
+      "LoginDTO": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名",
+            "example": "admin"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码",
+            "example": "admin123"
+          }
+        }
+      },
+      "RegisterDTO": {
+        "type": "object",
+        "required": ["username", "password"],
+        "properties": {
+          "username": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 20,
+            "pattern": "^[a-zA-Z0-9_]+$",
+            "description": "用户名（5-20个字符，只能包含字母、数字和下划线）",
+            "example": "guest001"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 20,
+            "description": "密码（6-20个字符）",
+            "example": "guest123"
+          }
+        }
+      },
+      "UserInfoVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "用户ID",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "description": "用户名",
+            "example": "admin"
+          },
+          "nickname": {
+            "type": "string",
+            "description": "昵称",
+            "example": "馆长"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱",
+            "example": "admin@example.com"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "description": "头像URL",
+            "example": "https://example.com/avatar.png"
+          },
+          "gender": {
+            "type": "integer",
+            "description": "性别（0:女, 1:男）",
+            "enum": [0, 1],
+            "example": 1
+          },
+          "bio": {
+            "type": "string",
+            "description": "个人简介",
+            "example": "热爱阅读"
+          },
+          "role": {
+            "type": "integer",
+            "description": "角色（0:管理员, 1:游客）",
+            "enum": [0, 1],
+            "example": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间",
+            "example": "2025-11-10T10:30:00.000000"
+          }
+        }
+      },
+      "LoginVO": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "访问令牌",
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfoVO"
+          }
+        }
+      },
+      "ApiResponseLoginVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginVO"
+          }
+        }
+      },
+      "ApiResponseUserInfoVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/UserInfoVO"
+          }
+        }
+      },
+      "ApiResponseBoolean": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "type": "boolean",
+            "description": "是否已登录",
+            "example": true
+          }
+        }
+      },
+      "ApiResponseVoid": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "example": null
+          }
+        }
+      },
+      "ApiResponseError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "错误状态码",
+            "example": "5000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "错误消息",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "example": null
+          }
+        }
+      }
+    }
+  }
+}
+

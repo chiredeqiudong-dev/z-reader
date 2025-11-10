@@ -1,4 +1,4 @@
-package com.zreader.auth.domain;
+package com.zreader.auth.model;
 
 
 import com.baomidou.mybatisplus.annotation.*;
@@ -79,14 +79,12 @@ public class ZUser implements Serializable {
      * 创建时间
      * 数据库: created_at DATETIME(6) NOT NULL DEFAULT ...
      */
-    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;
 
     /**
      * 更新时间
      * 数据库: updated_at DATETIME(6) NOT NULL DEFAULT ... ON UPDATE ...
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updatedAt;
 
     public Integer getId() {

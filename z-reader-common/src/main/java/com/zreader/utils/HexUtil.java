@@ -85,7 +85,7 @@ public final class HexUtil {
      *
      * @return 随机盐值
      */
-    public static String getRandomSalt() {
+    private static String getRandomSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[random.nextInt(5, 9)];
         random.nextBytes(salt);
@@ -114,9 +114,9 @@ public final class HexUtil {
      * 测试
      */
     public static void main(String[] args) {
-        String encrypted = HexUtil.encryptAndFormat("123456");
+        String encrypted = HexUtil.encryptAndFormat("admin123");
         System.out.println(encrypted);
-        System.out.println(HexUtil.verify(encrypted, "123456")); // true
+        System.out.println(HexUtil.verify(encrypted, "admin123")); // true
     }
 
 }

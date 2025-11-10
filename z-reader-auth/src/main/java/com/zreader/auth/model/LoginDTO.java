@@ -1,7 +1,7 @@
-package com.zreader.auth.dto;
+package com.zreader.auth.model;
 
 
-import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * 登录数据传输对象
