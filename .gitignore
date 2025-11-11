@@ -18,8 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-uploads/
-logs/
 
 ### NetBeans ###
 /nbproject/private/
@@ -33,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+.cursor/
+
+### Other files ###
+uploads/
+logs/
