@@ -5,7 +5,7 @@ import com.zreader.auth.model.LoginDTO;
 import com.zreader.auth.model.LoginVO;
 import com.zreader.auth.model.RegisterDTO;
 import com.zreader.auth.model.UserInfoVO;
-import com.zreader.response.ApiResponse;
+import com.zreader.common.response.ApiResponse;
 
 /**
  * 认证服务接口

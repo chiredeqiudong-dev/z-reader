@@ -28,5 +28,5 @@ WHERE role = 0;
 -- 1. 首次部署时，请执行此脚本创建管理员账号
 -- 2. 默认管理员用户名：admin，密码：admin123
 -- 3. 请在部署后立即修改管理员密码
--- 4. 如需重新生成密码哈希，可以在 com.zreader.common.util/HexUtil.java 执行：
+-- 4. 如需重新生成密码哈希，可以在 com.zreader.constant.util/HexUtil.java 执行：
 

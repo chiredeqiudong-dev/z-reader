@@ -1,4 +1,4 @@
-package com.zreader.enums;
+package com.zreader.common.enums;
 
 
 /**
@@ -25,7 +25,17 @@ public enum ResultCode {
     /**
      * 用户相关 U2xxx
      */
-    USER_NOT_FOUND("U2001", "用户不存在");
+    USER_NOT_FOUND("U2001", "用户不存在"),
+
+    /**
+     * 设置模块相关 S3xxx
+     */
+    CATEGORY_NAME_EXISTS("S3001", "分类名称已存在"),
+    CATEGORY_NOT_FOUND("S3002", "分类不存在"),
+    CATEGORY_IN_USE("S3003", "分类正在被使用，无法删除"),
+
+    STORAGE_PROVIDER_NAME_EXISTS("S3101", "存储提供商名称重复"),
+    STORAGE_PROVIDER_NOT_FOUND("S3102", "存储提供商不存在");
 
 
     private final String code;

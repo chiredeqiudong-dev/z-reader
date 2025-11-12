@@ -1,6 +1,6 @@
-package com.zreader.exception;
+package com.zreader.common.exception;
 
-import com.zreader.enums.ResultCode;
+import com.zreader.common.enums.ResultCode;
 
 /**
  * 自定义业务异常 (Business Exception)

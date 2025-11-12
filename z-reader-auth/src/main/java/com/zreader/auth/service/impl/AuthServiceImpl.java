@@ -5,13 +5,13 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.zreader.auth.mapper.ZUserMapper;
 import com.zreader.auth.model.*;
 import com.zreader.auth.service.AuthService;
-import com.zreader.exception.BizException;
-import com.zreader.response.ApiResponse;
-import com.zreader.utils.HexUtil;
+import com.zreader.common.exception.BizException;
+import com.zreader.common.response.ApiResponse;
+import com.zreader.common.utils.HexUtil;
 import org.springframework.stereotype.Service;
 
-import static com.zreader.auth.constant.AuthConstant.ROLE_GUEST;
-import static com.zreader.enums.ResultCode.*;
+import static com.zreader.common.constant.AuthConstant.ROLE_GUEST;
+import static com.zreader.common.enums.ResultCode.*;
 
 /**
  * 认证服务实现类

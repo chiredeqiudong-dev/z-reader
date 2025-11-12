@@ -1,4 +1,4 @@
-package com.zreader.utils;
+package com.zreader.common.utils;
 
 
 import com.google.common.hash.Hashing;

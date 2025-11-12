@@ -15,6 +15,15 @@
     <packaging>jar</packaging>
     <description>系统配置模块(分类、存储)</description>
 
+    <dependencies>
+        <!--内部依赖-->
+        <dependency>
+            <groupId>cn.turingzy</groupId>
+            <artifactId>z-reader-common</artifactId>
+        </dependency>
+        <!--外部依赖-->
+
+    </dependencies>
 
 
 </project>

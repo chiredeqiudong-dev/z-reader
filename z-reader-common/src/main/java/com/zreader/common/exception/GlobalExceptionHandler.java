@@ -1,6 +1,6 @@
-package com.zreader.exception;
+package com.zreader.common.exception;
 
-import com.zreader.response.ApiResponse;
+import com.zreader.common.response.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.ObjectError;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.zreader.enums.ResultCode.ERROR;
-import static com.zreader.enums.ResultCode.SYSTEM_ERROR;
+import static com.zreader.common.enums.ResultCode.ERROR;
+import static com.zreader.common.enums.ResultCode.SYSTEM_ERROR;
 
 
 /**

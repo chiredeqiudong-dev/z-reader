@@ -8,11 +8,11 @@ import com.zreader.auth.model.LoginVO;
 import com.zreader.auth.model.RegisterDTO;
 import com.zreader.auth.model.UserInfoVO;
 import com.zreader.auth.service.AuthService;
-import com.zreader.response.ApiResponse;
+import com.zreader.common.response.ApiResponse;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.zreader.auth.constant.AuthConstant.ROLE_ADMIN_STR;
+import static com.zreader.common.constant.AuthConstant.ROLE_ADMIN_STR;
 
 /**
  * 认证控制器

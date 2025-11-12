@@ -1,17 +1,18 @@
-package com.zreader.exception;
+package com.zreader.common.exception;
 
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.dev33.satoken.exception.NotRoleException;
-import com.zreader.response.ApiResponse;
+import com.zreader.common.response.ApiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import static com.zreader.enums.ResultCode.*;
+import static com.zreader.common.enums.ResultCode.*;
+
 
 /**
  * Sa-Token 异常处理器

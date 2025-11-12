@@ -1,8 +1,8 @@
-package com.zreader.response;
+package com.zreader.common.response;
 
 
-import static com.zreader.enums.ResultCode.ERROR;
-import static com.zreader.enums.ResultCode.SUCCESS;
+import static com.zreader.common.enums.ResultCode.ERROR;
+import static com.zreader.common.enums.ResultCode.SUCCESS;
 
 /**
  * 统一返回格式

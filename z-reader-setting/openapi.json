@@ -1,0 +1,858 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Z-Reader 设置模块 API",
+    "description": "个人电子书阅读器 - 设置模块，提供书籍分类管理、存储提供商配置管理等功能",
+    "version": "1.0.0",
+    "contact": {
+      "name": "zy",
+      "email": "your-email@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "本地开发服务器"
+    }
+  ],
+  "tags": [
+    {
+      "name": "书籍分类",
+      "description": "书籍分类管理相关接口"
+    },
+    {
+      "name": "存储提供商",
+      "description": "存储提供商配置管理相关接口"
+    }
+  ],
+  "paths": {
+    "/api/setting/category": {
+      "post": {
+        "tags": ["书籍分类"],
+        "summary": "创建分类",
+        "description": "创建新的书籍分类，仅管理员可操作",
+        "operationId": "createCategory",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDTO"
+              },
+              "example": {
+                "categoryName": "科幻小说"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3001": {
+            "description": "分类名称已存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "S3001",
+                  "msg": "分类名称已存在",
+                  "data": null
+                }
+              }
+            }
+          },
+          "A1007": {
+            "description": "仅管理员可操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["书籍分类"],
+        "summary": "查询所有分类",
+        "description": "查询所有书籍分类，按书籍数量倒序排列，仅管理员可操作",
+        "operationId": "listCategories",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseCategoryVOList"
+                }
+              }
+            }
+          },
+          "A1007": {
+            "description": "仅管理员可操作",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/setting/category/{id}": {
+      "put": {
+        "tags": ["书籍分类"],
+        "summary": "更新分类",
+        "description": "更新指定ID的书籍分类，仅管理员可操作",
+        "operationId": "updateCategory",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "分类ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryDTO"
+              },
+              "example": {
+                "categoryName": "科幻文学"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3001": {
+            "description": "分类名称已存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "S3002": {
+            "description": "分类不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "S3002",
+                  "msg": "分类不存在",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["书籍分类"],
+        "summary": "删除分类",
+        "description": "删除指定ID的书籍分类，若分类下有书籍则无法删除，仅管理员可操作",
+        "operationId": "deleteCategory",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "分类ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3002": {
+            "description": "分类不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "S3003": {
+            "description": "分类正在被使用，无法删除",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "S3003",
+                  "msg": "分类正在被使用，无法删除",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/setting/storage-provider": {
+      "post": {
+        "tags": ["存储提供商"],
+        "summary": "创建存储提供商",
+        "description": "创建新的存储提供商配置，仅管理员可操作",
+        "operationId": "createProvider",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StorageProviderDTO"
+              },
+              "examples": {
+                "本地存储": {
+                  "value": {
+                    "providerName": "本地存储",
+                    "storageType": "local",
+                    "isActive": 1,
+                    "localRootPath": "/var/books/",
+                    "basePath": "/"
+                  }
+                },
+                "阿里云OSS": {
+                  "value": {
+                    "providerName": "阿里云OSS",
+                    "storageType": "oss",
+                    "isActive": 1,
+                    "endpoint": "https://oss-cn-hangzhou.aliyuncs.com",
+                    "region": "cn-hangzhou",
+                    "accessKey": "LTAI5t...",
+                    "secretKey": "abc123...",
+                    "bucketName": "my-books",
+                    "basePath": "/books/"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3101": {
+            "description": "存储提供商名称已存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "S3101",
+                  "msg": "存储提供商名称已存在",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["存储提供商"],
+        "summary": "查询所有存储提供商",
+        "description": "查询所有存储提供商配置（敏感信息已脱敏），仅管理员可操作",
+        "operationId": "listProviders",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseStorageProviderVOList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/setting/storage-provider/{id}": {
+      "get": {
+        "tags": ["存储提供商"],
+        "summary": "查询单个存储提供商",
+        "description": "根据ID查询存储提供商配置（敏感信息已脱敏），仅管理员可操作",
+        "operationId": "getProviderById",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "提供商ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "查询成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseStorageProviderVO"
+                }
+              }
+            }
+          },
+          "S3102": {
+            "description": "存储提供商不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "S3102",
+                  "msg": "存储提供商不存在",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["存储提供商"],
+        "summary": "更新存储提供商",
+        "description": "更新指定ID的存储提供商配置，仅管理员可操作",
+        "operationId": "updateProvider",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "提供商ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StorageProviderDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3101": {
+            "description": "存储提供商名称已存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          },
+          "S3102": {
+            "description": "存储提供商不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["存储提供商"],
+        "summary": "删除存储提供商",
+        "description": "删除指定ID的存储提供商配置，仅管理员可操作",
+        "operationId": "deleteProvider",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "提供商ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "删除成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3102": {
+            "description": "存储提供商不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/setting/storage-provider/{id}/toggle-active": {
+      "put": {
+        "tags": ["存储提供商"],
+        "summary": "启用/停用存储提供商",
+        "description": "切换存储提供商的启用状态，仅管理员可操作",
+        "operationId": "toggleActive",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "提供商ID",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "切换成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseVoid"
+                }
+              }
+            }
+          },
+          "S3102": {
+            "description": "存储提供商不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "Authentication": {
+        "type": "apiKey",
+        "name": "Authentication",
+        "in": "header",
+        "description": "Sa-Token 认证令牌"
+      }
+    },
+    "schemas": {
+      "CategoryDTO": {
+        "type": "object",
+        "required": ["categoryName"],
+        "properties": {
+          "categoryName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "description": "分类名称（1-20个字符）",
+            "example": "科幻小说"
+          }
+        }
+      },
+      "CategoryVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "分类ID",
+            "example": 1
+          },
+          "categoryName": {
+            "type": "string",
+            "description": "分类名称",
+            "example": "科幻小说"
+          },
+          "bookCount": {
+            "type": "integer",
+            "description": "该分类下书籍数量",
+            "example": 15
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间",
+            "example": "2025-11-12T10:30:00.000000"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间",
+            "example": "2025-11-12T10:30:00.000000"
+          }
+        }
+      },
+      "StorageProviderDTO": {
+        "type": "object",
+        "required": ["providerName", "storageType"],
+        "properties": {
+          "providerName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 32,
+            "description": "提供商名称（1-32个字符）",
+            "example": "本地存储"
+          },
+          "storageType": {
+            "type": "string",
+            "enum": ["local", "s3", "oss", "cos", "minio"],
+            "description": "存储类型",
+            "example": "local"
+          },
+          "isActive": {
+            "type": "integer",
+            "description": "是否启用（1=启用，0=停用）",
+            "enum": [0, 1],
+            "example": 1
+          },
+          "localRootPath": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "本地绝对路径（仅 local 模式使用）",
+            "example": "/var/books/"
+          },
+          "endpoint": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "S3 兼容端点",
+            "example": "https://oss-cn-hangzhou.aliyuncs.com"
+          },
+          "region": {
+            "type": "string",
+            "maxLength": 64,
+            "description": "区域",
+            "example": "cn-hangzhou"
+          },
+          "accessKey": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "访问密钥",
+            "example": "LTAI5t..."
+          },
+          "secretKey": {
+            "type": "string",
+            "maxLength": 256,
+            "description": "私密密钥",
+            "example": "abc123..."
+          },
+          "bucketName": {
+            "type": "string",
+            "maxLength": 128,
+            "description": "存储桶名称",
+            "example": "my-books"
+          },
+          "basePath": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "路径前缀",
+            "example": "/books/"
+          }
+        }
+      },
+      "StorageProviderVO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "提供商ID",
+            "example": 1
+          },
+          "providerName": {
+            "type": "string",
+            "description": "提供商名称",
+            "example": "本地存储"
+          },
+          "storageType": {
+            "type": "string",
+            "description": "存储类型",
+            "example": "local"
+          },
+          "isActive": {
+            "type": "integer",
+            "description": "是否启用",
+            "example": 1
+          },
+          "localRootPath": {
+            "type": "string",
+            "description": "本地绝对路径",
+            "example": "/var/books/"
+          },
+          "endpoint": {
+            "type": "string",
+            "description": "S3 兼容端点",
+            "example": "https://oss-cn-hangzhou.aliyuncs.com"
+          },
+          "region": {
+            "type": "string",
+            "description": "区域",
+            "example": "cn-hangzhou"
+          },
+          "accessKey": {
+            "type": "string",
+            "description": "访问密钥",
+            "example": "LTAI5t..."
+          },
+          "secretKey": {
+            "type": "string",
+            "description": "私密密钥（脱敏后，仅显示前4位+****）",
+            "example": "abc1****"
+          },
+          "bucketName": {
+            "type": "string",
+            "description": "存储桶名称",
+            "example": "my-books"
+          },
+          "basePath": {
+            "type": "string",
+            "description": "路径前缀",
+            "example": "/books/"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "创建时间",
+            "example": "2025-11-12T10:30:00.000000"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "更新时间",
+            "example": "2025-11-12T10:30:00.000000"
+          }
+        }
+      },
+      "ApiResponseVoid": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "example": null
+          }
+        }
+      },
+      "ApiResponseCategoryVOList": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryVO"
+            }
+          }
+        }
+      },
+      "ApiResponseStorageProviderVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "$ref": "#/components/schemas/StorageProviderVO"
+          }
+        }
+      },
+      "ApiResponseStorageProviderVOList": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "响应状态码",
+            "example": "2000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StorageProviderVO"
+            }
+          }
+        }
+      },
+      "ApiResponseError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "错误状态码",
+            "example": "5000"
+          },
+          "msg": {
+            "type": "string",
+            "description": "错误消息",
+            "example": "error"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "example": null
+          }
+        }
+      }
+    }
+  }
+}
+
