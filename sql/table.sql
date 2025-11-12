@@ -112,7 +112,9 @@ CREATE TABLE IF NOT EXISTS z_storage_provider
     bucket_name     VARCHAR(128)         DEFAULT NULL COMMENT '存储桶',
     base_path       VARCHAR(255)         DEFAULT '/' COMMENT '存储路径前缀（如：/books/）',
     created_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
-    updated_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间'
+    updated_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
+    check ( storage_type = 'local' or storage_type = 'cloud'),
+    check ( is_active = '0' or storage_type = '1')
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='存储提供商配置表';
