@@ -3,10 +3,7 @@ package com.zreader.auth.api;
 
 import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
-import com.zreader.auth.model.LoginDTO;
-import com.zreader.auth.model.LoginVO;
-import com.zreader.auth.model.RegisterDTO;
-import com.zreader.auth.model.UserInfoVO;
+import com.zreader.auth.model.*;
 import com.zreader.auth.service.AuthService;
 import com.zreader.common.response.ApiResponse;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +50,17 @@ public class AuthController {
     @SaCheckRole(value = ROLE_ADMIN_STR)
     public ApiResponse<Void> registerGuest(@RequestBody @Validated RegisterDTO registerDto) {
         return authService.registerGuest(registerDto);
+    }
+
+    /**
+     * 更新当前用户信息
+     *
+     * @param updateUserInfoDto 用户信息更新数据
+     * @return 更新后的用户信息
+     */
+    @PutMapping("/update/info")
+    public ApiResponse<UserInfoVO> updateCurrentUser(@RequestBody @Validated UpdateUserInfoDTO updateUserInfoDto) {
+        return authService.updateCurrentUser(updateUserInfoDto);
     }
 
     /**

@@ -34,7 +34,7 @@ public class ZUser implements Serializable {
 
     /**
      * 昵称
-     * 数据库: nickname VARCHAR(20) DEFAULT 'z-reader'
+     * 数据库: nickname VARCHAR(20) NOT NULL DEFAULT 'z-reader'
      */
     private String nickname;
 
@@ -65,7 +65,7 @@ public class ZUser implements Serializable {
 
     /**
      * 个人简介
-     * 数据库: bio VARCHAR(255) DEFAULT NULL
+     * 数据库: bio VARCHAR(64) DEFAULT NULL
      */
     private String bio;
 

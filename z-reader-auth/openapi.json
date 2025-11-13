@@ -205,6 +205,78 @@
         }
       }
     },
+    "/api/auth/update/info": {
+      "put": {
+        "tags": ["认证"],
+        "summary": "更新当前用户信息",
+        "description": "更新当前登录用户的个人资料信息（部分更新）",
+        "operationId": "updateCurrentUser",
+        "security": [
+          {
+            "Authentication": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserInfoDTO"
+              },
+              "example": {
+                "nickname": "新昵称",
+                "email": "newemail@example.com",
+                "avatarUrl": "https://example.com/new-avatar.png",
+                "gender": 1,
+                "bio": "这是我的新个人简介"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseUserInfoVO"
+                }
+              }
+            }
+          },
+          "A1004": {
+            "description": "未登录",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "A1004",
+                  "msg": "未登录",
+                  "data": null
+                }
+              }
+            }
+          },
+          "U2001": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResponseError"
+                },
+                "example": {
+                  "code": "U2001",
+                  "msg": "用户不存在",
+                  "data": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/logout": {
       "post": {
         "tags": ["认证"],
@@ -292,6 +364,46 @@
             "example": "guest123"
           }
         }
+      },
+      "UpdateUserInfoDTO": {
+        "type": "object",
+        "properties": {
+          "nickname": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 20,
+            "description": "昵称（1-20个字符，可选）",
+            "example": "新昵称"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 255,
+            "description": "邮箱（邮箱格式，可选）",
+            "example": "newemail@example.com"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "maxLength": 512,
+            "description": "头像URL（最长512字符，可选）",
+            "example": "https://example.com/avatar.png"
+          },
+          "gender": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "性别（0:女, 1:男，可选）",
+            "enum": [0, 1],
+            "example": 1
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 255,
+            "description": "个人简介（最长255字符，可选）",
+            "example": "热爱阅读，喜欢分享"
+          }
+        },
+        "description": "用户信息更新请求，所有字段均为可选，仅更新提供的字段"
       },
       "UserInfoVO": {
         "type": "object",

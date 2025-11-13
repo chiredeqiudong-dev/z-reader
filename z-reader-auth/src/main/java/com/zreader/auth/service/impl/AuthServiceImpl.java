@@ -94,6 +94,33 @@ public class AuthServiceImpl implements AuthService {
         StpUtil.logout();
     }
 
+    @Override
+    public ApiResponse<UserInfoVO> updateCurrentUser(UpdateUserInfoDTO updateUserInfoDto) {
+        // 从 Sa-Token 获取当前登录用户ID
+        Object loginId = StpUtil.getLoginIdDefaultNull();
+        if (loginId == null) {
+            return ApiResponse.error(AUTH_NOT_LOGIN.getCode(), AUTH_NOT_LOGIN.getMsg());
+        }
+
+        Integer userId = Integer.parseInt((String) loginId);
+
+        // 检查用户是否存在
+        ZUser user = zUserMapper.selectById(userId);
+        if (user == null) {
+            return ApiResponse.error(USER_NOT_FOUND.getCode(), USER_NOT_FOUND.getMsg());
+        }
+
+        int result = zUserMapper.updateUserInfo(userId, updateUserInfoDto);
+        if (result <= 0) {
+            return ApiResponse.error();
+        }
+
+        // 重新查询更新后的用户信息
+        user = zUserMapper.selectById(userId);
+        UserInfoVO userInfoVO = convertToUserInfoVO(user);
+        return ApiResponse.ok(userInfoVO);
+    }
+
     /**
      * 将用户实体转换为用户信息VO
      *

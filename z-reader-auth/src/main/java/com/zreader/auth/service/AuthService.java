@@ -1,10 +1,7 @@
 package com.zreader.auth.service;
 
 
-import com.zreader.auth.model.LoginDTO;
-import com.zreader.auth.model.LoginVO;
-import com.zreader.auth.model.RegisterDTO;
-import com.zreader.auth.model.UserInfoVO;
+import com.zreader.auth.model.*;
 import com.zreader.common.response.ApiResponse;
 
 /**
@@ -43,4 +40,12 @@ public interface AuthService {
      * 用户登出
      */
     void logout();
+
+    /**
+     * 更新当前用户信息
+     *
+     * @param updateUserInfoDto 用户信息更新数据
+     * @return 更新后的用户信息
+     */
+    ApiResponse<UserInfoVO> updateCurrentUser(UpdateUserInfoDTO updateUserInfoDto);
 }
