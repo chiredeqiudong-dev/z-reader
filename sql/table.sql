@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS z_storage_provider
     -- 基本信息
     id              INT UNSIGNED AUTO_INCREMENT PRIMARY KEY COMMENT '存储提供商ID',
     provider_name   VARCHAR(32) NOT NULL UNIQUE COMMENT '提供商名称（如：local, aws_s3, aliyun_oss）',
-    storage_type    varchar(20) NOT NULL COMMENT '存储类型(local or cloud)',
+    storage_type    varchar(20) NOT NULL COMMENT '存储类型（local/S3/COS/OSS/KODO 等）',
     is_active       TINYINT(1)  NOT NULL DEFAULT 0 COMMENT '是否启用：0=停用,1=启用',
     -- 本地存储配置（仅 local 模式使用）
     local_root_path VARCHAR(512)         DEFAULT NULL COMMENT '本地绝对路径（如：/var/books/）',
@@ -113,7 +113,6 @@ CREATE TABLE IF NOT EXISTS z_storage_provider
     base_path       VARCHAR(255)         DEFAULT '/' COMMENT '资源访问前缀（如：/books/）',
     created_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
     updated_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
-    check ( storage_type = 'local' or storage_type = 'cloud'),
     check ( is_active = '0' or storage_type = '1')
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

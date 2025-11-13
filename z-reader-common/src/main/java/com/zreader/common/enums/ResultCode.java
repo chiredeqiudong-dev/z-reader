@@ -12,6 +12,8 @@ public enum ResultCode {
     SUCCESS("2000", "success"),
     ERROR("5000", "error"),
     SYSTEM_ERROR("S1000", "系统未知错误"),
+    INVALID_PARAM("S1001", "参数错误"),
+    RESOURCE_NOT_FOUND("S1002", "资源不存在"),
 
     /**
      * 认证授权相关 A1xxx
@@ -35,7 +37,16 @@ public enum ResultCode {
     CATEGORY_IN_USE("S3003", "分类正在被使用，无法删除"),
 
     STORAGE_PROVIDER_NAME_EXISTS("S3101", "存储提供商名称重复"),
-    STORAGE_PROVIDER_NOT_FOUND("S3102", "存储提供商不存在");
+    STORAGE_PROVIDER_NOT_FOUND("S3102", "存储提供商不存在"),
+
+    /**
+     * 书籍模块相关 B4xxx
+     */
+    BOOK_NOT_FOUND("B4001", "书籍不存在"),
+    BOOK_UPLOAD_FAILED("B4002", "书籍上传失败"),
+    BOOK_PARSE_FAILED("B4003", "书籍解析失败"),
+    BOOK_FILE_TOO_LARGE("B4004", "书籍文件过大"),
+    BOOK_FILE_TYPE_NOT_SUPPORTED("B4005", "不支持的书籍文件类型");
 
 
     private final String code;

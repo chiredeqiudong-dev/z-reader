@@ -32,14 +32,14 @@ public class ZStorageProvider implements Serializable {
     private String providerName;
 
     /**
-     * 存储类型
-     * 数据库: storage_type ENUM ('local', 's3', 'oss', 'cos', 'minio') NOT NULL
+     * 存储类型（LOCAL/S3/COS/OSS/KODO）
+     * 数据库: storage_type VARCHAR(20) NOT NULL
      */
     private String storageType;
 
     /**
-     * 是否启用
-     * 数据库: is_active TINYINT(1) NOT NULL DEFAULT 1
+     * 是否启用 1=启用，0=停用
+     * 数据库: is_active TINYINT(1) NOT NULL DEFAULT 0
      */
     private Integer isActive;
 

@@ -287,15 +287,28 @@
                     "basePath": "/"
                   }
                 },
-                "云存储": {
+                "阿里云OSS": {
                   "value": {
                     "providerName": "阿里云OSS",
-                    "storageType": "cloud",
+                    "storageType": "OSS",
                     "isActive": 1,
                     "endpoint": "https://oss-cn-hangzhou.aliyuncs.com",
                     "region": "cn-hangzhou",
                     "accessKey": "LTAI5t...",
                     "secretKey": "abc123...",
+                    "bucketName": "my-books",
+                    "basePath": "/books/"
+                  }
+                },
+                "腾讯云COS": {
+                  "value": {
+                    "providerName": "腾讯云COS",
+                    "storageType": "COS",
+                    "isActive": 1,
+                    "endpoint": "https://cos.ap-guangzhou.myqcloud.com",
+                    "region": "ap-guangzhou",
+                    "accessKey": "AKID...",
+                    "secretKey": "secret...",
                     "bucketName": "my-books",
                     "basePath": "/books/"
                   }
@@ -636,8 +649,8 @@
           },
           "storageType": {
             "type": "string",
-            "enum": ["local", "cloud"],
-            "description": "存储类型（local=本地存储, cloud=云存储）",
+            "enum": ["local", "S3", "COS", "OSS", "KODO"],
+            "description": "存储类型（local=本地存储, S3=AWS S3, COS=腾讯云COS, OSS=阿里云OSS, KODO=七牛云Kodo）",
             "example": "local"
           },
           "isActive": {
@@ -705,7 +718,8 @@
           },
           "storageType": {
             "type": "string",
-            "description": "存储类型",
+            "enum": ["local", "S3", "COS", "OSS", "KODO"],
+            "description": "存储类型（local/S3/COS/OSS/KODO）",
             "example": "local"
           },
           "isActive": {

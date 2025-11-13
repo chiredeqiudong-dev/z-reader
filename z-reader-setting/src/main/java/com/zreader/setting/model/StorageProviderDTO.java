@@ -1,5 +1,6 @@
 package com.zreader.setting.model;
 
+import com.zreader.common.enums.StorageProvider;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,10 +21,10 @@ public class StorageProviderDTO {
     private String providerName;
 
     /**
-     * 存储类型（local or cloud）
+     * 存储类型
      */
     @NotBlank(message = "存储类型不能为空")
-    @Pattern(regexp = "^(local|cloud)$", message = "存储类型必须是 local or cloud")
+    @Pattern(regexp = StorageProvider.VALID_PATTERN, message = "存储方式目前只支持 LOCAL、S3、COS、OSS、KODO")
     private String storageType;
 
     /**

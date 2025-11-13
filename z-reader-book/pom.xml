@@ -15,4 +15,32 @@
     <packaging>jar</packaging>
     <description>核心业务模块</description>
 
+    <dependencies>
+        <!--内部依赖-->
+        <dependency>
+            <groupId>cn.turingzy</groupId>
+            <artifactId>z-reader-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.turingzy</groupId>
+            <artifactId>z-reader-setting</artifactId>
+        </dependency>
+        
+        <!--Apache Tika 书籍解析-->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers-standard-package</artifactId>
+        </dependency>
+        
+        <!--WebSocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

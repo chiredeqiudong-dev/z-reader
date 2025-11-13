@@ -32,7 +32,7 @@ public interface ZUserMapper extends BaseMapper<ZUser> {
     default int updateUserInfo(Integer userId, UpdateUserInfoDTO updateUserInfoDto) {
         LambdaUpdateWrapper<ZUser> updateWrapper = new LambdaUpdateWrapper<>();
         updateWrapper.eq(ZUser::getId, userId)
-                .set(updateUserInfoDto.getNickname() != null, ZUser::getUsername, updateUserInfoDto.getNickname())
+                .set(updateUserInfoDto.getNickname() != null, ZUser::getNickname, updateUserInfoDto.getNickname())
                 .set(updateUserInfoDto.getEmail() != null, ZUser::getEmail, updateUserInfoDto.getEmail())
                 .set(updateUserInfoDto.getAvatarUrl() != null, ZUser::getAvatarUrl, updateUserInfoDto.getAvatarUrl())
                 .set(updateUserInfoDto.getGender() != null, ZUser::getGender, updateUserInfoDto.getGender())

@@ -24,5 +24,15 @@ public interface ZStorageProviderMapper extends BaseMapper<ZStorageProvider> {
         queryWrapper.eq(ZStorageProvider::getProviderName, providerName);
         return selectOne(queryWrapper);
     }
+
+    /**
+     * 查询启用的存储提供商（is_active = 1）
+     */
+    default ZStorageProvider selectActiveProvider() {
+        LambdaQueryWrapper<ZStorageProvider> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(ZStorageProvider::getIsActive, 1);
+        queryWrapper.last("LIMIT 1");
+        return selectOne(queryWrapper);
+    }
 }
 

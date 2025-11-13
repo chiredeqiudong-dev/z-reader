@@ -37,7 +37,9 @@ public class StorageProviderServiceImpl implements StorageProviderService {
             return ApiResponse.error(STORAGE_PROVIDER_NAME_EXISTS.getCode(), STORAGE_PROVIDER_NAME_EXISTS.getMsg());
         }
 
-        ZStorageProvider provider = getZStorageProvider(providerDto);
+        // 创建存储提供商
+        ZStorageProvider provider = new ZStorageProvider();
+        transferProvider(provider, providerDto);
 
         int result = providerMapper.insert(provider);
         if (result <= 0) {
@@ -45,24 +47,6 @@ public class StorageProviderServiceImpl implements StorageProviderService {
         }
 
         return ApiResponse.ok();
-    }
-
-    /**
-     * 创建新存储提供商
-     */
-    private ZStorageProvider getZStorageProvider(StorageProviderDTO providerDto) {
-        ZStorageProvider provider = new ZStorageProvider();
-        provider.setProviderName(providerDto.getProviderName());
-        provider.setStorageType(providerDto.getStorageType());
-        provider.setIsActive(providerDto.getIsActive() != null ? providerDto.getIsActive() : 0);
-        provider.setLocalRootPath(providerDto.getLocalRootPath());
-        provider.setEndpoint(providerDto.getEndpoint());
-        provider.setRegion(providerDto.getRegion());
-        provider.setAccessKey(providerDto.getAccessKey());
-        provider.setSecretKey(providerDto.getSecretKey());
-        provider.setBucketName(providerDto.getBucketName());
-        provider.setBasePath(providerDto.getBasePath() != null && !providerDto.getBasePath().isEmpty() ? providerDto.getBasePath() : "/");
-        return provider;
     }
 
     @Override
@@ -101,19 +85,7 @@ public class StorageProviderServiceImpl implements StorageProviderService {
         }
 
         // 更新提供商信息
-        provider.setProviderName(providerDto.getProviderName());
-        provider.setStorageType(providerDto.getStorageType());
-        if (providerDto.getIsActive() != null) {
-            provider.setIsActive(providerDto.getIsActive());
-        }
-        provider.setLocalRootPath(providerDto.getLocalRootPath());
-        provider.setEndpoint(providerDto.getEndpoint());
-        provider.setRegion(providerDto.getRegion());
-        provider.setAccessKey(providerDto.getAccessKey());
-        provider.setSecretKey(providerDto.getSecretKey());
-        provider.setBucketName(providerDto.getBucketName());
-        provider.setBasePath(providerDto.getBasePath());
-
+        transferProvider(provider, providerDto);
         int result = providerMapper.updateById(provider);
         if (result <= 0) {
             return ApiResponse.error();
@@ -155,6 +127,22 @@ public class StorageProviderServiceImpl implements StorageProviderService {
         }
 
         return ApiResponse.ok();
+    }
+
+    /**
+     * 对象赋值
+     */
+    private void transferProvider(ZStorageProvider provider, StorageProviderDTO providerDto) {
+        provider.setProviderName(providerDto.getProviderName());
+        provider.setStorageType(providerDto.getStorageType());
+        provider.setIsActive(providerDto.getIsActive() != null ? providerDto.getIsActive() : 0);
+        provider.setLocalRootPath(providerDto.getLocalRootPath());
+        provider.setEndpoint(providerDto.getEndpoint());
+        provider.setRegion(providerDto.getRegion());
+        provider.setAccessKey(providerDto.getAccessKey());
+        provider.setSecretKey(providerDto.getSecretKey());
+        provider.setBucketName(providerDto.getBucketName());
+        provider.setBasePath(providerDto.getBasePath() != null && !providerDto.getBasePath().isEmpty() ? providerDto.getBasePath() : "/");
     }
 
     /**
