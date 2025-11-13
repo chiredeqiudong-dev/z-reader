@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS z_storage_provider
     access_key      VARCHAR(128)         DEFAULT NULL COMMENT '访问密钥',
     secret_key      VARCHAR(256)         DEFAULT NULL COMMENT '私密密钥',
     bucket_name     VARCHAR(128)         DEFAULT NULL COMMENT '存储桶',
-    base_path       VARCHAR(255)         DEFAULT '/' COMMENT '存储路径前缀（如：/books/）',
+    base_path       VARCHAR(255)         DEFAULT '/' COMMENT '资源访问前缀（如：/books/）',
     created_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) COMMENT '创建时间',
     updated_at      DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6) COMMENT '更新时间',
     check ( storage_type = 'local' or storage_type = 'cloud'),

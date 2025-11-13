@@ -61,7 +61,7 @@ public class StorageProviderServiceImpl implements StorageProviderService {
         provider.setAccessKey(providerDto.getAccessKey());
         provider.setSecretKey(providerDto.getSecretKey());
         provider.setBucketName(providerDto.getBucketName());
-        provider.setBasePath(providerDto.getBasePath() != null ? providerDto.getBasePath() : "/");
+        provider.setBasePath(providerDto.getBasePath() != null && !providerDto.getBasePath().isEmpty() ? providerDto.getBasePath() : "/");
         return provider;
     }
 
