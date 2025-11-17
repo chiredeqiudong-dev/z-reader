@@ -1,6 +1,8 @@
 package com.zreader.common.response;
 
 
+import com.zreader.common.enums.ResultCode;
+
 import static com.zreader.common.enums.ResultCode.ERROR;
 import static com.zreader.common.enums.ResultCode.SUCCESS;
 
@@ -61,6 +63,10 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> error(String code, String msg, T data) {
         return new ApiResponse<>(code, msg, data);
+    }
+
+    public static <T> ApiResponse<T> error(ResultCode resultCode,T data) {
+        return new ApiResponse<>(resultCode.getCode(), resultCode.getMsg(), data);
     }
 
     public String getCode() {
