@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS z_book_storage
     file_size           BIGINT UNSIGNED NOT NULL COMMENT '文件大小（字节）',
     file_hash           CHAR(64)        NOT NULL UNIQUE COMMENT 'SHA256 文件哈希（防重复上传）',
     -- 存储位置
-    storage_provider_id VARCHAR(10)     NOT NULL COMMENT '存储服务提供ID',
+    storage_provider_id INT UNSIGNED    NOT NULL COMMENT '存储服务提供ID',
     file_url            VARCHAR(1024)   NOT NULL COMMENT '文件完整访问URL'
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
